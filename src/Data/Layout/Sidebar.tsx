@@ -42,8 +42,19 @@ export const MenuList: MenuItem[] = [
         type: "sub",
         active: false,
         children: [
-          { path: '/brands', type: "link", title: "Brands List" },
+          { path: '/brands', type: "link", title: "Brand List" },
           { path: '/brands/entry', type: "link", title: "Create Brand" },
+        ]
+      },
+      {
+        title: "Categories",
+        id: 1,
+        icon: "Category",
+        type: "sub",
+        active: false,
+        children: [
+          { path: '/categories', type: "link", title: "Category List" },
+          { path: '/categories/entry', type: "link", title: "Create Category" },
         ]
       }
     ],

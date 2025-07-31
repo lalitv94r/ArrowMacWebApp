@@ -1833,7 +1833,6 @@ export const AddProduct = "Add Product";
 export const ProductList = "Product List";
 export const ProductForm = "Product Form";
 export const TypesOfProductDiscount = "Types of product discount";
-export const CategoryName = "Category Name";
 export const CreateNewCategoryHeading = "Create New Category";
 export const ChooseYourCurrency = "Choose your currency";
 export const InitialCost = "Initial cost";
@@ -2007,3 +2006,11 @@ export const BrandName = "Brand Name";
 export const BrandNamePlaceholder = "Enter brand name";
 export const BrandSlug = "Brand Slug";
 export const BrandSlugPlaceholder = "Enter brand slug";
+
+//Categories
+export const CategoriesHeading = "Categories";
+export const CategoryListHeading = "Category List";
+export const CategoryEntryHeading = "Category Entry";
+export const AddNewCategory = "Add New Category";
+export const CategoryName = "Category Name";
+export const CategorySlug = "Category Slug";

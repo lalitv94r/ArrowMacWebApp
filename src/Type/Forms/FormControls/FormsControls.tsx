@@ -119,6 +119,8 @@ export interface FormValidationProp {
   terms: [];
 }
 
+// ---------------Brands---------------
+
 export interface BrandValidationProp {
   name: string;
   slug: string;
@@ -126,4 +128,15 @@ export interface BrandValidationProp {
 
 export interface BrandFormProps {
   handleSubmitBrand: (value: BrandValidationProp, { resetForm }: { resetForm: () => void }) => void;
+}
+
+// -------------Categories--------------
+
+export interface CategoryValidationProp {
+  name: string;
+  slug: string;
+}
+
+export interface CategoryFormProps {
+  handleSubmitBrand: (value: CategoryValidationProp, { resetForm }: { resetForm: () => void }) => void;
 }

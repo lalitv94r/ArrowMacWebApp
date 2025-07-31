@@ -4,6 +4,7 @@ const api_urls = {
     signup: "/api/v1/auth/signup/",
 
     brands: "/api/v1/brands/",
+    category: "/api/v1/category/",
 }
 
 export default api_urls;
