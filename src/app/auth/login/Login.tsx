@@ -35,7 +35,7 @@ const Login = () => {
       toast.success("Successfully logged in.");
       router.push("/dashboard");
     } else {
-      toast.error("Invalid Credentaial. Please try again.");
+      toast.error("Invalid or Exire OTP. Please try again.");
     }
   };
 

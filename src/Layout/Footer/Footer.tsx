@@ -7,7 +7,7 @@ const Footer = () => {
       <Container fluid>
         <Row>
           <Col md="6" className="footer-copyright">
-            <p className="mb-0">Copyright 2025 © Guttify.</p>
+            <p className="mb-0">Copyright 2025 © Arrowmac.</p>
           </Col>
           <Col md="6">
             {/* <p className="mb-0 float-end">

@@ -82,10 +82,10 @@ export interface FormValidationProp {
 
 export interface FormValidationsProp {
   submitErrors: boolean;
-  setSubmitError: (key:boolean)=>void
+  setSubmitError: (key: boolean) => void
   errors: FormikErrors<FormValidationProp>;
 }
-export  interface ButtonDropdownListProp {
+export interface ButtonDropdownListProp {
   color: string;
   title?: string;
   options: string[];
@@ -117,4 +117,13 @@ export interface FormValidationProp {
   file: string;
   description: string;
   terms: [];
+}
+
+export interface BrandValidationProp {
+  name: string;
+  slug: string;
+}
+
+export interface BrandFormProps {
+  handleSubmitBrand: (value: BrandValidationProp, { resetForm }: { resetForm: () => void }) => void;
 }

@@ -1995,3 +1995,15 @@ export const InvoiceThree = "Invoice 3";
 export const InvoiceFour = "Invoice 4";
 export const InvoiceFive = "Invoice 5";
 export const InvoiceSix = "Invoice 6";
+
+// Masters
+// Brands
+export const BrandsHeading = "Brands";
+export const BrandListHeading = "Brand List";
+export const BrandEntryHeading = "Brand Entry";
+export const AddNewBrand = "Add New Brand";
+export const EditBrand = "Edit Brand";
+export const BrandName = "Brand Name";
+export const BrandNamePlaceholder = "Enter brand name";
+export const BrandSlug = "Brand Slug";
+export const BrandSlugPlaceholder = "Enter brand slug";

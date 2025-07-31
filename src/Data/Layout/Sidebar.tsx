@@ -5,30 +5,47 @@ export const MenuList: MenuItem[] = [
     title: "General",
     Items: [
       { path: `/dashboard`, icon: "Home", title: "Dashboard", type: "link" },
+      // {
+      //   title: "Dashboard",
+      //   id: 1,
+      //   icon: "Home",
+      //   type: "sub",
+      //   badge: "", // use for show badge count...
+      //   children: [
+      //     { path: `/dashboard`, title: "Default", type: "link" },
+      //     // { path: `/dashboard/default`, title: "Default", type: "link" },
+      //     // { path: `/dashboard/ecommerce`, title: "Ecommerce", type: "link" },
+      //     // { path: `/dashboard/project`, title: "Project", type: "link" },
+      //   ],
+      // },
+      // {
+      //   title: "Widgets",
+      //   id: 2,
+      //   icon: "Pie",
+      //   type: "sub",
+      //   active: false,
+      //   children: [
+      //     { path: `/widgets/general`, title: "General", type: "link" },
+      //     { path: `/widgets/chart`, title: "Chart", type: "link" },
+      //   ],
+      // },
+    ],
+  },
+  {
+    title: "Master",
+    lanClass: "lan-8",
+    Items: [
       {
-        title: "Dashboard",
+        title: "Brands",
         id: 1,
-        icon: "Home",
-        type: "sub",
-        badge: "", // use for show badge count...
-        children: [
-          { path: `/dashboard`, title: "Default", type: "link" },
-          // { path: `/dashboard/default`, title: "Default", type: "link" },
-          // { path: `/dashboard/ecommerce`, title: "Ecommerce", type: "link" },
-          // { path: `/dashboard/project`, title: "Project", type: "link" },
-        ],
-      },
-      {
-        title: "Widgets",
-        id: 2,
-        icon: "Pie",
+        icon: "Work",
         type: "sub",
         active: false,
         children: [
-          { path: `/widgets/general`, title: "General", type: "link" },
-          { path: `/widgets/chart`, title: "Chart", type: "link" },
-        ],
-      },
+          { path: '/brands', type: "link", title: "Brands List" },
+          { path: '/brands/entry', type: "link", title: "Create Brand" },
+        ]
+      }
     ],
   },
   {
