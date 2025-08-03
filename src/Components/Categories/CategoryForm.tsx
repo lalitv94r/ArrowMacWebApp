@@ -96,7 +96,7 @@ const CategoryForm = ({
                                         <button
                                             type="button"
                                             className="btn btn-warning"
-                                            onClick={() => route?.push('/brands')}
+                                            onClick={() => route?.push('/categories')}
                                         >
                                             Cancel
                                         </button>

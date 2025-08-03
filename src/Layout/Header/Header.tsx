@@ -10,8 +10,8 @@ const Header = () => {
     <header className="page-header row">
       <div className="logo-wrapper d-flex align-items-center col-auto">
         <Link href={`/dashboard/default`}>
-          <Image width={126} height={47} className="for-dark" src={`${ImagePath}/logo/light-logo.png`} alt="logo" />
-          <Image width={126} height={47} className="for-light" src={`${ImagePath}/logo/dark-logo.png`} alt="logo" />
+          <Image width={100} height={70} className="for-dark" src={`${ImagePath}/logo/logo.png`} alt="logo" />
+          <Image width={120} height={47} className="for-light" src={`${ImagePath}/logo/logo.png`} alt="logo" />
         </Link>
         <CloseButton />
       </div>
