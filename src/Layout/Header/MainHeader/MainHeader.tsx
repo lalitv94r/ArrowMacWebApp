@@ -17,7 +17,7 @@ const MainHeader = () => {
       <SearchInput />
       <div className="nav-right">
         <ul className="header-right">
-          <DarkMode />
+          {/* <DarkMode /> */}
           <ResponsiveSearch />
           <ZoomInOut />
           {/* <Language /> */}

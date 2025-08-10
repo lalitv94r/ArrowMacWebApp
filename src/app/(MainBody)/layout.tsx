@@ -51,7 +51,7 @@ const RootLayout: React.FC<ChildrenType> = ({ children }) => {
           <Footer />
         </div>
       </main>
-      <ThemeCustomizer />
+      {/* <ThemeCustomizer /> */}
       <TapTop />
     </Provider>
   );

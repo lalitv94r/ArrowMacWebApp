@@ -17,7 +17,7 @@ const ModalAlert = ({
     }
 
     return (
-        <div>
+        <div className='curser-pointer'>
             <RiDeleteBin6Line
                 size={20}
                 className='bg-danger text-white'

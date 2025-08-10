@@ -1,3 +1,5 @@
+import { exportPages } from "next/dist/export/worker";
+
 export const Href = "#javascript";
 export const ImagePath = "/assets/images";
 
@@ -461,7 +463,6 @@ export const Profile = "Profile";
 export const ContactUs = "Contact us";
 export const Settings = "Settings";
 export const Inbox = "Inbox";
-export const Description = "Description";
 
 //Ui Kits - Lists
 export const Lists = "Lists";
@@ -1825,7 +1826,6 @@ export const Cod = "COD";
 export const Emi = "EMI";
 export const NetBankings = "Net Banking";
 export const YourTotalBalance = "768,987.90";
-export const ProductName = "Product Name";
 export const ArticleNumber = "Article Number";
 export const Units = "Units";
 export const ExpirationDate = "Expiration Date";
@@ -1914,7 +1914,6 @@ export const RateNow = "Rate Now";
 export const AddToCart = "Add To Cart";
 export const BuyNow = "Buy Now";
 export const AddToWishList = "Add To WishList";
-export const Brand = "Brand";
 
 // OrderHistory
 export const OrderHistory = "Orders History";
@@ -2014,3 +2013,24 @@ export const CategoryEntryHeading = "Category Entry";
 export const AddNewCategory = "Add New Category";
 export const CategoryName = "Category Name";
 export const CategorySlug = "Category Slug";
+
+//Products
+export const ProductHeading = "Products";
+export const ProductsListHeading = "Product List";
+export const ProductEntryHeading = "Porduct Entry";
+export const AddNewProduct = "Add New Product";
+export const EditProduct = "Edit Product";
+export const ProductName = "Product Name";
+export const ProudctNamePlaceholder = "Enter product name";
+export const ProductSlug = "Product Slug";
+export const ProductSlugPlaceholder = "Enter product slug";
+export const Brand = "Brand";
+export const SelectBrand = "Select a brand";
+export const Category = "Category";
+export const SelectCategory = "Select a category";
+export const BasePrice = "Base Price";
+export const BasePricePlaceholder = "Enter some base price"
+export const DiscountAmount = "Discount Amount";
+export const DiscountAmountPlaceholder = "Enter some dicount amount";
+export const Description = "Description";
+export const DescPlaceholder = "Enter description";

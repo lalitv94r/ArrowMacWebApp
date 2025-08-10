@@ -13,7 +13,7 @@
     --footer-icon: #FF3636;
     --light-semi-gray: #efefef;
     --photoswipe-border: #ddd;
-    --theme-default: #013366;
+    --theme-default: #3E64FF;
     --theme-black: #000;
     --theme-secondary: #C280D2;
     --light2: rgba(67, 185, 178, 0.1);
@@ -148,7 +148,7 @@ html[data-theme="dark"] {
 
 // theme color
 $paper-color: #FFF4E1;
-$primary-color: #013366;
+$primary-color: #3E64FF;
 $secondary-color: #E197f7;
 $tertiary-color: #56FDFF;
 $success-color: #17A600;
@@ -219,7 +219,7 @@ $sidebar-fill-icon-color: #757589;
 // input variables
 $input-radius: 0;
 $input-font-size: 14px;
-$input-padding: 12px 20px;
+$input-padding: 12px 12px;
 // button variables
 $btn-hover-shadow: 3px 3px 3px var(--shape-border);
 // card settings

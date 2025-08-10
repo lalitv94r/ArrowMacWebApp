@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { Form, FormGroup, Input, Label } from 'reactstrap';
 
 const CategoryForm = ({
-    handleSubmitBrand,
+    handleSubmitCategory,
 }: CategoryFormProps) => {
 
     const params = useParams();
@@ -30,7 +30,7 @@ const CategoryForm = ({
         <div>
             <Formik<CategoryValidationProp>
                 initialValues={CategoryInitialValues}
-                onSubmit={handleSubmitBrand}
+                onSubmit={handleSubmitCategory}
                 validationSchema={CategoryValidation}
             >
                 {({ values, handleChange, submitForm, resetForm, errors, setFieldValue, setFormikState }) => {
@@ -95,14 +95,14 @@ const CategoryForm = ({
                                     <FormGroup className="d-flex justify-content-end gap-2 mt-3">
                                         <button
                                             type="button"
-                                            className="btn btn-warning"
+                                            className="btn btn-secondary"
                                             onClick={() => route?.push('/categories')}
                                         >
                                             Cancel
                                         </button>
                                         <button
                                             type="button"
-                                            className="btn btn-success"
+                                            className="btn btn-primary"
                                             onClick={() => submitForm()} // Update
                                         >
                                             Update
@@ -112,14 +112,14 @@ const CategoryForm = ({
                                     <FormGroup className="d-flex justify-content-end gap-2 mt-3">
                                         <button
                                             type="button"
-                                            className="btn btn-warning"
+                                            className="btn btn-secondary"
                                             onClick={() => resetForm()}
                                         >
                                             Reset
                                         </button>
                                         <button
                                             type="button"
-                                            className="btn btn-success"
+                                            className="btn btn-primary"
                                             onClick={() => submitForm()} // Create
                                         >
                                             Save

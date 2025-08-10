@@ -1,4 +1,5 @@
 import { FormikErrors } from "formik";
+import { exportPages } from "next/dist/export/worker";
 
 export interface VariationRadioProp {
   id: number;
@@ -138,5 +139,49 @@ export interface CategoryValidationProp {
 }
 
 export interface CategoryFormProps {
-  handleSubmitBrand: (value: CategoryValidationProp, { resetForm }: { resetForm: () => void }) => void;
+  handleSubmitCategory: (value: CategoryValidationProp, { resetForm }: { resetForm: () => void }) => void;
+}
+
+// --------------Products---------------
+
+export interface DDValidationProps {
+  label: string;
+  value: number | string;
+}
+
+export interface ProductValidationProp {
+  name: string;
+  slug: string;
+  brand: DDValidationProps;
+  category: DDValidationProps;
+  description: string;
+  base_price: number | string;
+  discount_amount: number | string;
+  is_active: boolean;
+}
+
+export interface ProductFormProps {
+  handleSubmitProduct: (value: ProductValidationProp, { resetForm }: { resetForm: () => void }) => void;
+}
+
+// -------------Aync Drop Down -------------
+export interface AsyncDropDownProp {
+  onSelect: (args: any) => void;
+  isCreatable?: boolean;
+  value: any;
+  searchKey?: string;
+  apiEndPoint: string;
+  placeholder?: string;
+}
+
+export interface ddOption {
+  value: string | number;
+  label: string;
+}
+
+// ------------Check Box-------------
+export interface CheckBoxProps {
+  label: string;
+  onCheck: (args: any) => void;
+  check: boolean;
 }

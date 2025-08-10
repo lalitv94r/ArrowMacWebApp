@@ -95,14 +95,14 @@ const BrandForm = ({
                                     <FormGroup className="d-flex justify-content-end gap-2 mt-3">
                                         <button
                                             type="button"
-                                            className="btn btn-warning"
+                                            className="btn btn-secondary"
                                             onClick={() => route?.push('/brands')}
                                         >
                                             Cancel
                                         </button>
                                         <button
                                             type="button"
-                                            className="btn btn-success"
+                                            className="btn btn-primary"
                                             onClick={() => submitForm()} // Update
                                         >
                                             Update
@@ -112,14 +112,14 @@ const BrandForm = ({
                                     <FormGroup className="d-flex justify-content-end gap-2 mt-3">
                                         <button
                                             type="button"
-                                            className="btn btn-warning"
+                                            className="btn btn-secondary"
                                             onClick={() => resetForm()}
                                         >
                                             Reset
                                         </button>
                                         <button
                                             type="button"
-                                            className="btn btn-success"
+                                            className="btn btn-primary"
                                             onClick={() => submitForm()} // Create
                                         >
                                             Save

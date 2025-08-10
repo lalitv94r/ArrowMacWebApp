@@ -1,18 +1,18 @@
 import TransparentLoader from '@/app/transparentLoader';
 import Breadcrumbs from '@/CommonComponent/Breadcrumbs/Breadcrumbs';
 import CardHeaderCommon from '@/CommonComponent/CommonCardHeader/CardHeaderCommon';
-import { AddNewCategory, CategoriesHeading, CategoryEntryHeading } from '@/Constant';
+import { AddNewProduct, ProductEntryHeading, ProductHeading } from '@/Constant';
 import useFetch from '@/network';
-import api_urls from '@/network/apiUrls';
-import { BrandValidationProp } from '@/Type/Forms/FormControls/FormsControls';
-import { isNotNull } from '@/utils/Utilities';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react'
-import { toast } from 'react-toastify';
 import { Card, CardBody, Col, Container } from 'reactstrap';
-import CategoryForm from './CategoryForm';
+import ProductForm from './ProductForm';
+import { ProductValidationProp } from '@/Type/Forms/FormControls/FormsControls';
+import { isNotNull } from '@/utils/Utilities';
+import api_urls from '@/network/apiUrls';
+import { toast } from 'react-toastify';
 
-const CategoryEntry = () => {
+const ProductEntry = () => {
 
     const { post, put, loading } = useFetch();
 
@@ -22,17 +22,19 @@ const CategoryEntry = () => {
 
     console.log("params", params)
 
-    const handleSubmitCategory = async (values: BrandValidationProp, { resetForm }: { resetForm: () => void }) => {
-        let body = { ...values }
+    const handleSubmitProduct = async (values: ProductValidationProp, { resetForm }: { resetForm: () => void }) => {
+        let body: any = { ...values };
+        body["brand"] = values?.brand?.value;
+        body["category"] = values?.category?.value
         console.log("body", body);
         if (!isNotNull(params?.params?.[0])) {
-            // Create new brand
+            // Create new product
             try {
-                let response: any = await post(api_urls?.category, body);
+                let response: any = await post(api_urls?.products, body);
                 console.log("RESPONSE", response);
                 if (response?.status === 201) {
                     toast.success(response?.message);
-                    router.push('/categories');
+                    router.push(`/products/entry/${response?.data?.id}/`);
                 } else {
                     toast.error(response?.message);
                 }
@@ -41,13 +43,13 @@ const CategoryEntry = () => {
                 toast.error(error?.message);
             }
         } else {
-            // Update brand
+            // Update product
             try {
-                let response: any = await put(`${api_urls?.category}${params?.params?.[0]}/`, body);
+                let response: any = await put(`${api_urls?.products}${params?.params?.[0]}/`, body);
                 console.log("RESPONSE", response);
                 if (response?.status === 200) {
                     toast.success(response?.message);
-                    router.push('/categories');
+                    router.push(`/products/entry/${response?.data?.id}/`);
                 } else {
                     toast.error(response?.message);
                 }
@@ -63,19 +65,19 @@ const CategoryEntry = () => {
             {
                 loading && <TransparentLoader />
             }
-            <Breadcrumbs mainTitle={CategoryEntryHeading} parent={CategoriesHeading} />
-            <Container fluid className="brand-entry">
-                <Col md="6" lg="4">
+            <Breadcrumbs mainTitle={ProductEntryHeading} parent={ProductHeading} />
+            <Container fluid className="product-entry">
+                <Col md="6" lg="12">
                     <Card>
-                        <CardHeaderCommon title={AddNewCategory} />
+                        <CardHeaderCommon title={AddNewProduct} />
                         <CardBody>
-                            <CategoryForm handleSubmitCategory={handleSubmitCategory} />
+                            <ProductForm handleSubmitProduct={handleSubmitProduct} />
                         </CardBody>
                     </Card>
                 </Col>
             </Container>
-        </div >
+        </div>
     )
 }
 
-export default CategoryEntry;
+export default ProductEntry;
