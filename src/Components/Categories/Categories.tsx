@@ -81,7 +81,7 @@ const Categories: React.FC = () => {
                         <div>
                             <button
                                 type="button"
-                                className="btn btn-info"
+                                className="btn btn-primary"
                                 onClick={() => router?.push('/categories/entry')}
                             >
                                 Add New Category

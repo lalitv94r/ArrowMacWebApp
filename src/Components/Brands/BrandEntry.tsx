@@ -65,7 +65,7 @@ const BrandEntry = () => {
             }
             <Breadcrumbs mainTitle={BrandEntryHeading} parent={BrandsHeading} />
             <Container fluid className="brand-entry">
-                <Col md="6" lg="4">
+                <Col md="6" lg="6">
                     <Card>
                         <CardHeaderCommon title={AddNewBrand} />
                         <CardBody>

@@ -37,11 +37,18 @@ const useFetch = <T = any>(): UseFetchResult<T> => {
                 setError(null);
                 setResponse(null);
                 try {
+
+                    const isFormData = body instanceof FormData;
+
                     const options: RequestInit = {
                         method,
                         headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": session?.accessToken ? `Bearer ${session.accessToken}` : "",
+                            ...(isFormData
+                                ? {} // Let browser set Content-Type
+                                : { "Content-Type": "application/json" }),
+                            "Authorization": session?.accessToken
+                                ? `Bearer ${session.accessToken}`
+                                : "",
                             ...headers,
                         },
                         credentials: "include",
@@ -50,7 +57,7 @@ const useFetch = <T = any>(): UseFetchResult<T> => {
                     console.log("options", options)
 
                     if (body) {
-                        options.body = JSON.stringify(body);
+                        options.body = isFormData ? body : JSON.stringify(body);
                     }
 
                     const api_endpoint = getBaseURL() + url;

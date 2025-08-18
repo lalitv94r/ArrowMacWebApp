@@ -81,7 +81,7 @@ const Brands: React.FC = () => {
                         <div>
                             <button
                                 type="button"
-                                className="btn btn-info"
+                                className="btn btn-primary"
                                 onClick={() => router?.push('/brands/entry')}
                             >
                                 Add New Brand

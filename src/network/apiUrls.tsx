@@ -5,7 +5,8 @@ const api_urls = {
 
     brands: "/api/v1/brands/",
     category: "/api/v1/category/",
-    products: "/api/v1/products/"
+    specsTypes: "/api/v1/spec-types/",
+    products: "/api/v1/products/",
 }
 
 export default api_urls;

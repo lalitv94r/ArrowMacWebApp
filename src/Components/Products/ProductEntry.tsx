@@ -1,7 +1,7 @@
 import TransparentLoader from '@/app/transparentLoader';
 import Breadcrumbs from '@/CommonComponent/Breadcrumbs/Breadcrumbs';
 import CardHeaderCommon from '@/CommonComponent/CommonCardHeader/CardHeaderCommon';
-import { AddNewProduct, ProductEntryHeading, ProductHeading } from '@/Constant';
+import { AddNewProduct, ProductEntryHeading, ProductHeading, UpdateProduct } from '@/Constant';
 import useFetch from '@/network';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react'
@@ -20,45 +20,89 @@ const ProductEntry = () => {
 
     const params = useParams();
 
-    console.log("params", params)
+    const handleSubmitProduct = async (
+        values: ProductValidationProp,
+        { resetForm }: { resetForm: () => void }
+    ) => {
+        console.log("VALUES>>", values);
+        try {
+            const formData = new FormData();
 
-    const handleSubmitProduct = async (values: ProductValidationProp, { resetForm }: { resetForm: () => void }) => {
-        let body: any = { ...values };
-        body["brand"] = values?.brand?.value;
-        body["category"] = values?.category?.value
-        console.log("body", body);
-        if (!isNotNull(params?.params?.[0])) {
-            // Create new product
-            try {
-                let response: any = await post(api_urls?.products, body);
-                console.log("RESPONSE", response);
-                if (response?.status === 201) {
-                    toast.success(response?.message);
-                    router.push(`/products/entry/${response?.data?.id}/`);
-                } else {
-                    toast.error(response?.message);
+            // --------------------------
+            // Base product data (JSON only)
+            // --------------------------
+            let body: any = { ...values };
+            body.brand = values?.brand?.value;
+            body.category = values?.category?.value;
+
+            // Format specifications
+            body.specifications = values?.specifications?.map((i: any) => ({
+                type: i?.type?.value,
+                value: i?.value,
+            }));
+
+            // --------------------------
+            // Handle images
+            // --------------------------
+            const existingImages =
+                values.images?.map((i: any) => ({
+                    id: i?.id,
+                    is_primary: i?.is_primary,
+                })) || [];
+
+            // keep only IDs in JSON body for existing ones
+            body.images = existingImages;
+
+            // New files (primary + secondary)
+            const newFiles = [
+                ...(values.primary_images || []),
+                ...(values.secondary_images || []),
+            ];
+
+            newFiles.forEach((img: any, index: number) => {
+                if (img?.image instanceof File) {
+                    formData.append(`images[${index}][image]`, img.image);
+                    formData.append(
+                        `images[${index}][is_primary]`,
+                        String(img.is_primary)
+                    );
                 }
-            } catch (error: any) {
-                console.log("ERROR", error);
-                toast.error(error?.message);
+            });
+
+            console.log("BODY>>", body);
+
+            // --------------------------
+            // Add non-file data
+            // --------------------------
+            formData.append("data", JSON.stringify(body));
+
+            // --------------------------
+            // API call: create or update
+            // --------------------------
+            const isEdit = Boolean(params?.params?.[0]);
+            const url = isEdit
+                ? `${api_urls.products}${params?.params?.[0]}/`
+                : api_urls.products;
+
+            const response: any = isEdit
+                ? await put(url, formData)
+                : await post(url, formData);
+
+            if (
+                (isEdit && response?.status === 200) ||
+                (!isEdit && response?.status === 201)
+            ) {
+                toast.success(response?.message || "Product saved successfully!");
+                // router.push(`/products`);
+            } else {
+                toast.error(response?.message || "Something went wrong");
             }
-        } else {
-            // Update product
-            try {
-                let response: any = await put(`${api_urls?.products}${params?.params?.[0]}/`, body);
-                console.log("RESPONSE", response);
-                if (response?.status === 200) {
-                    toast.success(response?.message);
-                    router.push(`/products/entry/${response?.data?.id}/`);
-                } else {
-                    toast.error(response?.message);
-                }
-            } catch (error: any) {
-                console.log("ERROR", error);
-                toast.error(error?.message);
-            }
+        } catch (error: any) {
+            console.error("ERROR", error);
+            toast.error(error?.message || "An error occurred");
         }
-    }
+    };
+
 
     return (
         <div>
@@ -69,7 +113,7 @@ const ProductEntry = () => {
             <Container fluid className="product-entry">
                 <Col md="6" lg="12">
                     <Card>
-                        <CardHeaderCommon title={AddNewProduct} />
+                        <CardHeaderCommon title={!isNotNull(params?.params?.[0]) ? AddNewProduct : UpdateProduct} />
                         <CardBody>
                             <ProductForm handleSubmitProduct={handleSubmitProduct} />
                         </CardBody>

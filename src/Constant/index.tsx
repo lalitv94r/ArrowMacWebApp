@@ -2019,6 +2019,7 @@ export const ProductHeading = "Products";
 export const ProductsListHeading = "Product List";
 export const ProductEntryHeading = "Porduct Entry";
 export const AddNewProduct = "Add New Product";
+export const UpdateProduct = "Product Details"
 export const EditProduct = "Edit Product";
 export const ProductName = "Product Name";
 export const ProudctNamePlaceholder = "Enter product name";
@@ -2034,3 +2035,21 @@ export const DiscountAmount = "Discount Amount";
 export const DiscountAmountPlaceholder = "Enter some dicount amount";
 export const Description = "Description";
 export const DescPlaceholder = "Enter description";
+
+// Specifications
+export const Specifications = "Specifications";
+export const SpecsListHeading = "Specification List";
+export const SpecsEntryHeading = "Specification Entry";
+export const SpecsName = "Spec Name";
+export const SpecsNameEntry = "Enter Spec Name";
+export const SpecsUnit = "Spec Unit";
+export const SpecsUnitEntry = "Enter Spec Unit";
+export const AddNewSpecs = "Add New Specification";
+export const UpdateSpecs = "Update Specification";
+export const ProductSpec = "Product Specification";
+export const SelectProductSpec = "Select Product Specification";
+export const ProductSpecValue = "Value";
+export const EnterProductSpecValue = "Enter a value";
+
+// Product Images
+export const ProductImages = "Product Images";

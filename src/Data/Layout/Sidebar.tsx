@@ -58,6 +58,17 @@ export const MenuList: MenuItem[] = [
         ]
       },
       {
+        title: "Specifications",
+        id: 1,
+        icon: "Game",
+        type: "sub",
+        active: false,
+        children: [
+          { path: '/specs', type: "link", title: "Specification List" },
+          { path: '/specs/entry', type: "link", title: "Create Specification" },
+        ]
+      },
+      {
         title: "Products",
         id: 1,
         icon: "Bag",

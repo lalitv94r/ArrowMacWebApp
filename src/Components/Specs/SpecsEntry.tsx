@@ -1,18 +1,18 @@
 import TransparentLoader from '@/app/transparentLoader';
 import Breadcrumbs from '@/CommonComponent/Breadcrumbs/Breadcrumbs';
 import CardHeaderCommon from '@/CommonComponent/CommonCardHeader/CardHeaderCommon';
-import { AddNewCategory, CategoriesHeading, CategoryEntryHeading } from '@/Constant';
 import useFetch from '@/network';
 import api_urls from '@/network/apiUrls';
-import { BrandValidationProp } from '@/Type/Forms/FormControls/FormsControls';
+import { SpecificationsProps } from '@/Type/Forms/FormControls/FormsControls';
 import { isNotNull } from '@/utils/Utilities';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react'
 import { toast } from 'react-toastify';
 import { Card, CardBody, Col, Container } from 'reactstrap';
-import CategoryForm from './CategoryForm';
+import SpecsForm from './SpecsForm';
+import { AddNewSpecs, Specifications, SpecsEntryHeading, UpdateSpecs } from '@/Constant';
 
-const CategoryEntry = () => {
+const SpecsEntry = () => {
 
     const { post, put, loading } = useFetch();
 
@@ -20,19 +20,17 @@ const CategoryEntry = () => {
 
     const params = useParams();
 
-    console.log("params", params)
-
-    const handleSubmitCategory = async (values: BrandValidationProp, { resetForm }: { resetForm: () => void }) => {
-        let body = { ...values }
+    const handleSubmitSpecs = async (values: SpecificationsProps, { resetForm }: { resetForm: () => void }) => {
+        let body: any = { ...values };
         console.log("body", body);
         if (!isNotNull(params?.params?.[0])) {
-            // Create new brand
+            // Create new product
             try {
-                let response: any = await post(api_urls?.category, body);
+                let response: any = await post(api_urls?.specsTypes, body);
                 console.log("RESPONSE", response);
                 if (response?.status === 201) {
                     toast.success(response?.message);
-                    router.push('/categories');
+                    router.push(`/specs`);
                 } else {
                     toast.error(response?.message);
                 }
@@ -41,13 +39,13 @@ const CategoryEntry = () => {
                 toast.error(error?.message);
             }
         } else {
-            // Update brand
+            // Update product
             try {
-                let response: any = await put(`${api_urls?.category}${params?.params?.[0]}/`, body);
+                let response: any = await put(`${api_urls?.specsTypes}${params?.params?.[0]}/`, body);
                 console.log("RESPONSE", response);
                 if (response?.status === 200) {
                     toast.success(response?.message);
-                    router.push('/categories');
+                    router.push(`/specs`);
                 } else {
                     toast.error(response?.message);
                 }
@@ -63,19 +61,19 @@ const CategoryEntry = () => {
             {
                 loading && <TransparentLoader />
             }
-            <Breadcrumbs mainTitle={CategoryEntryHeading} parent={CategoriesHeading} />
-            <Container fluid className="brand-entry">
+            <Breadcrumbs mainTitle={SpecsEntryHeading} parent={Specifications} />
+            <Container fluid className="product-entry">
                 <Col md="6" lg="6">
                     <Card>
-                        <CardHeaderCommon title={AddNewCategory} />
+                        <CardHeaderCommon title={!isNotNull(params?.params?.[0]) ? AddNewSpecs : UpdateSpecs} />
                         <CardBody>
-                            <CategoryForm handleSubmitCategory={handleSubmitCategory} />
+                            <SpecsForm handleSubmitSpecs={handleSubmitSpecs} />
                         </CardBody>
                     </Card>
                 </Col>
             </Container>
-        </div >
+        </div>
     )
 }
 
-export default CategoryEntry;
+export default SpecsEntry;

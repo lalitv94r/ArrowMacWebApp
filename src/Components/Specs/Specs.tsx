@@ -1,7 +1,9 @@
 import TransparentLoader from '@/app/transparentLoader';
 import Breadcrumbs from '@/CommonComponent/Breadcrumbs/Breadcrumbs';
+import { Specifications, SpecsListHeading } from '@/Constant';
 import useFetch from '@/network';
 import api_urls from '@/network/apiUrls';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { Fragment, useEffect, useState } from 'react'
 import { FaRegEdit } from 'react-icons/fa';
@@ -9,11 +11,9 @@ import { toast } from 'react-toastify';
 import { Card, CardBody, CardHeader, Form, FormGroup, Input, Table } from 'reactstrap';
 import ModalAlert from '../UiKits/Modal/ModalAlert';
 import PaginationComponent from '../BonusUi/Pagination/Pagination';
-import { ProductHeading, ProductsListHeading } from '@/Constant';
 import NoDataFound from '../UiKits/NoDataFound/NoDataFound';
-import Link from 'next/link';
 
-const Products = () => {
+const Specs = () => {
 
     const { get, del, loading } = useFetch();
 
@@ -23,17 +23,17 @@ const Products = () => {
 
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const [products, setProducts] = useState<any>({});
+    const [specs, setSpecs] = useState<any>({});
 
     const router = useRouter();
 
     useEffect(() => {
-        const fetchProductsList = async () => {
+        const fetchSpecsList = async () => {
             try {
-                const result = await get(`${api_urls?.products}?page=${currentPage}&search=${search}`);
+                const result = await get(`${api_urls?.specsTypes}?page=${currentPage}&search=${search}`);
                 console.log("RESULTS", result);
                 if (result?.status === 200) {
-                    setProducts(result?.data);
+                    setSpecs(result?.data);
                 } else {
                     toast.error(result?.message);
                 }
@@ -43,12 +43,12 @@ const Products = () => {
                 setRefresh(false);
             }
         }
-        fetchProductsList();
+        fetchSpecsList();
     }, [search, currentPage, refresh]);
 
     const deleteItem = async (item: any) => {
         try {
-            let result: any = await del(`${api_urls?.products}${item?.id}/`);
+            let result: any = await del(`${api_urls?.specsTypes}${item?.id}/`);
             if (result?.status === 200) {
                 toast.success(result?.message);
             } else {
@@ -65,7 +65,7 @@ const Products = () => {
             {
                 loading && <TransparentLoader />
             }
-            <Breadcrumbs mainTitle={ProductsListHeading} parent={ProductHeading} />
+            <Breadcrumbs mainTitle={SpecsListHeading} parent={Specifications} />
             <Card className="hoverable-table">
                 <CardHeader>
                     <div className="d-flex justify-content-between">
@@ -73,7 +73,7 @@ const Products = () => {
                             <FormGroup>
                                 <Input
                                     type="text"
-                                    placeholder="Search product..."
+                                    placeholder="Search specifications..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
@@ -83,40 +83,36 @@ const Products = () => {
                             <button
                                 type="button"
                                 className="btn btn-primary"
-                                onClick={() => router?.push('/products/entry')}
+                                onClick={() => router?.push('/specs/entry')}
                             >
-                                Add New Product
+                                Add New Specification
                             </button>
                         </div>
                     </div>
                 </CardHeader>
                 <CardBody>
                     {
-                        products?.results?.length > 0 ?
+                        specs?.results?.length > 0 ?
                             <Fragment>
                                 <Table hover size={"md"} responsive>
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Slug</th>
-                                            <th>Category</th>
-                                            <th>Brand</th>
+                                            <th>Unit</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
-                                            products?.results?.map((i: any, idx: React.Key) => (
+                                            specs?.results?.map((i: any, idx: React.Key) => (
                                                 <tr key={i?.id}>
                                                     <td>{(Number(idx) + 1).toString()}</td>
                                                     <td>{i?.name}</td>
-                                                    <td>{i?.slug}</td>
-                                                    <td>{i?.category?.name}</td>
-                                                    <td>{i?.brand?.name}</td>
+                                                    <td>{i?.unit}</td>
                                                     <td>
                                                         <div className='d-flex'>
-                                                            <Link href={`/products/entry/${i?.id}`}>
+                                                            <Link href={`/specs/entry/${i?.id}`}>
                                                                 <FaRegEdit
                                                                     size={20}
                                                                     className={'bg-warning text-white me-2'}
@@ -135,7 +131,7 @@ const Products = () => {
                                 </Table>
                                 <PaginationComponent
                                     activePage={currentPage}
-                                    pages={products?.count}
+                                    pages={specs?.count}
                                     onActivePageChange={(num: any) => setCurrentPage(num)}
                                 />
                             </Fragment>
@@ -148,4 +144,4 @@ const Products = () => {
     )
 }
 
-export default Products;
+export default Specs;

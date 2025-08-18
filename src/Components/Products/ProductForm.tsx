@@ -1,9 +1,9 @@
-import { BasePrice, BasePricePlaceholder, Brand, Category, DescPlaceholder, Description, DiscountAmount, DiscountAmountPlaceholder, ProductName, ProductSlug, ProductSlugPlaceholder, ProudctNamePlaceholder, SelectBrand, SelectCategory } from '@/Constant';
+import { BasePrice, BasePricePlaceholder, Brand, Category, DescPlaceholder, Description, DiscountAmount, DiscountAmountPlaceholder, EnterProductSpecValue, ProductImages, ProductName, ProductSlug, ProductSlugPlaceholder, ProductSpec, ProductSpecValue, ProudctNamePlaceholder, SelectBrand, SelectCategory, SelectProductSpec, Specifications } from '@/Constant';
 import { ProductInitialValues, ProductValidation } from '@/Data/Forms/FormsControl/Products/Products';
 import useFetch from '@/network';
 import api_urls from '@/network/apiUrls';
 import { ProductFormProps, ProductValidationProp } from '@/Type/Forms/FormControls/FormsControls';
-import { isNotNull } from '@/utils/Utilities';
+import { isErrorObject, isNotNull } from '@/utils/Utilities';
 import { Formik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
@@ -11,6 +11,9 @@ import { toast } from 'react-toastify';
 import { Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 import AsyncDropDown from '../UiKits/AsyncDropDown/AsyncDropDown';
 import CheckBox from '../UiKits/CheckBox/CheckBox';
+import { PiMinusCircleBold, PiPlusCircleBold } from 'react-icons/pi';
+import FileDropPicker from '../UiKits/FileDropPicker/FileDropPicker';
+import { FileImage } from '@/Type/FileDropPicekrTypes';
 
 const ProductForm = ({
     handleSubmitProduct
@@ -27,6 +30,18 @@ const ProductForm = ({
         const slug = e?.target?.value?.toLowerCase()?.replace(/\s+/g, '-')?.replace(/[^\w-]+/g, '');
         setFieldValue('slug', slug);
     }
+
+    const handleAddMoreItem = (values: any, setFieldValue: any) => {
+        setFieldValue("specifications", [
+            ...values.specifications,
+            { type: { label: "", value: 0 }, value: "" }
+        ]);
+    };
+
+    const handleMinusItem = (index: number, values: any, setFieldValue: any) => {
+        const updatedSpecs = values.specifications.filter((_: any, i: React.Key) => i !== index);
+        setFieldValue("specifications", updatedSpecs);
+    };
 
     return (
         <div>
@@ -59,7 +74,12 @@ const ProductForm = ({
                                             base_price: result?.data?.base_price || 0,
                                             discount_amount: result?.data?.discount_amount || 0,
                                             description: result?.data?.description || "",
-                                            is_active: result?.data?.is_active || true
+                                            is_active: result?.data?.is_active,
+                                            specifications: result?.data?.specifications?.length > 0 ? result?.data?.specifications?.map((i: any) => ({
+                                                type: { label: i?.type?.name, value: i?.type?.id },
+                                                value: i?.value
+                                            })) : [{ type: { label: "", value: 0 }, value: "" }],
+                                            images: result?.data?.images
                                         }
                                     }));
                                 } else {
@@ -73,6 +93,70 @@ const ProductForm = ({
                             fetchProductById();
                         }
                     }, [params?.params]);
+
+                    // Handle primary image (usually 1)
+                    const handleSetPrimaryImage = ({
+                        newFiles,
+                        remainingImages,
+                    }: { newFiles: File[], remainingImages: FileImage[] }) => {
+                        // --- Add new files ---
+                        if (newFiles?.length > 0) {
+                            newFiles.forEach((file, idx) => {
+                                setFieldValue(`primary_images.${idx}.image`, file);
+                                setFieldValue(`primary_images.${idx}.is_primary`, true);
+                            });
+                        }
+
+                        // --- Keep existing (still selected) ---
+                        if (remainingImages?.length > 0) {
+                            remainingImages.forEach((img, idx) => {
+                                setFieldValue(`primary_images.${newFiles.length + idx}.image`, img.id);
+                                setFieldValue(`primary_images.${newFiles.length + idx}.is_primary`, img.is_primary ?? true);
+                            });
+                        }
+
+                        // --- Track deleted ---
+                        const originalIds = values?.images?.filter((i: any) => i?.is_primary)?.map((i: any) => i.id) || [];
+                        const remainingIds = remainingImages?.map((img: any) => img.id) || [];
+                        const deletedIds = originalIds.filter((id: any) => !remainingIds.includes(id));
+
+                        if (deletedIds.length > 0) {
+                            setFieldValue("delete_ids", [...(values.delete_ids || []), ...deletedIds]);
+                        }
+                    };
+
+
+                    // Handle secondary images (multiple allowed)
+                    const handleSetSecondaryImages = ({
+                        newFiles,
+                        remainingImages,
+                    }: { newFiles: File[], remainingImages: FileImage[] }) => {
+                        // --- Add new files ---
+                        if (newFiles?.length > 0) {
+                            newFiles.forEach((file, idx) => {
+                                setFieldValue(`secondary_images.${idx}.image`, file);
+                                setFieldValue(`secondary_images.${idx}.is_primary`, false);
+                            });
+                        }
+
+                        // --- Keep existing (still selected) ---
+                        if (remainingImages?.length > 0) {
+                            remainingImages.forEach((img, idx) => {
+                                setFieldValue(`secondary_images.${newFiles.length + idx}.image`, img.id);
+                                setFieldValue(`secondary_images.${newFiles.length + idx}.is_primary`, false);
+                            });
+                        }
+
+                        // --- Track deleted ---
+                        const originalIds = values?.images?.filter((i: any) => !i?.is_primary)?.map((i: any) => i.id) || [];
+                        const remainingIds = remainingImages?.map((img: any) => img.id) || [];
+                        const deletedIds = originalIds.filter((id: any) => !remainingIds.includes(id));
+
+                        if (deletedIds.length > 0) {
+                            setFieldValue("delete_ids", [...(values.delete_ids || []), ...deletedIds]);
+                        }
+                    };
+
                     return (
                         <Form className="theme-form">
                             <Row>
@@ -204,6 +288,108 @@ const ProductForm = ({
                                         onCheck={(value: any) => setFieldValue("is_active", value)}
                                     />
                                 </FormGroup>
+                            </Row>
+                            {/* Product Specifications */}
+                            <hr />
+                            <h4 className='mb-4 mt-1'>{Specifications}</h4>
+                            {values?.specifications?.map((spec, index) => (
+                                <Row key={index}>
+                                    <Col>
+                                        <FormGroup>
+                                            <Label>{ProductSpec}</Label>
+                                            <AsyncDropDown
+                                                onSelect={(value: any) => setFieldValue(`specifications.${index}.type`, value)}
+                                                value={spec.type}
+                                                apiEndPoint={api_urls?.specsTypes}
+                                                placeholder={SelectProductSpec}
+                                            />
+                                            {errors.specifications?.[index] && isErrorObject(errors.specifications[index]) && errors.specifications[index].type?.label && (
+                                                <div className="text-danger">
+                                                    {errors.specifications[index].type.label}
+                                                </div>
+                                            )}
+                                        </FormGroup>
+                                    </Col>
+                                    <Col>
+                                        <FormGroup>
+                                            <Label>{ProductSpecValue}</Label>
+                                            <Input
+                                                name={`specifications.${index}.value`}
+                                                value={spec.value}
+                                                onChange={handleChange}
+                                                placeholder={EnterProductSpecValue}
+                                            />
+                                            {errors.specifications?.[index] && isErrorObject(errors.specifications[index]) && errors.specifications[index].value && (
+                                                <div className="text-danger">
+                                                    {errors.specifications[index].value}
+                                                </div>
+                                            )}
+                                        </FormGroup>
+                                    </Col>
+                                    <Col sm="1">
+                                        <div className='mt-3 pt-3 d-flex justify-content-start'>
+                                            {
+                                                values?.specifications?.length > 1 &&
+                                                <PiMinusCircleBold
+                                                    onClick={() => handleMinusItem(index, values, setFieldValue)}
+                                                    color='white'
+                                                    className='bg-danger rounded-5 me-2'
+                                                    size={25}
+                                                />
+                                            }
+                                            {
+                                                values?.specifications?.length - 1 === index &&
+                                                <PiPlusCircleBold
+                                                    onClick={() => handleAddMoreItem(values, setFieldValue)}
+                                                    color='white'
+                                                    className='bg-success rounded-5'
+                                                    size={25}
+                                                />
+                                            }
+                                        </div>
+                                    </Col>
+                                </Row>
+                            ))}
+                            {/* Product Images */}
+                            <hr />
+                            <h4 className='mb-4 mt-1'>{ProductImages}</h4>
+                            <Row>
+                                <Col>
+                                    <Label>Primary Image</Label>
+                                    <FileDropPicker
+                                        fileImage={values?.images?.filter((i: any) => i?.is_primary)}
+                                        onChange={(file: any) => handleSetPrimaryImage(file)}
+                                        onDelete={(deletedImage) => {
+                                            setFormikState((prevState: any) => ({
+                                                ...prevState,
+                                                values: {
+                                                    ...prevState.values,
+                                                    images: values?.images?.filter((i: any) => i?.id !== deletedImage?.id)
+                                                }
+                                            }));
+                                            setFieldValue("delete_ids", [...(values.delete_ids || []), deletedImage.id]);
+                                        }}
+
+                                    />
+                                </Col>
+                                <Col>
+                                    <Label>Secondary Image</Label>
+                                    <FileDropPicker
+                                        multiple
+                                        fileImage={values?.images?.filter((i: any) => !i?.is_primary)}
+                                        onChange={(files) => handleSetSecondaryImages(files)}
+                                        onDelete={(deletedImage) => {
+                                            setFormikState((prevState: any) => ({
+                                                ...prevState,
+                                                values: {
+                                                    ...prevState.values,
+                                                    images: values?.images?.filter((i: any) => i?.id !== deletedImage?.id)
+                                                }
+                                            }));
+                                            setFieldValue("delete_ids", [...(values.delete_ids || []), deletedImage.id]);
+                                        }}
+                                    />
+                                </Col>
                             </Row>
                             {
                                 isNotNull(params?.params) ?

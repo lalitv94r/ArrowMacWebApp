@@ -142,11 +142,44 @@ export interface CategoryFormProps {
   handleSubmitCategory: (value: CategoryValidationProp, { resetForm }: { resetForm: () => void }) => void;
 }
 
+// ---------Specifications---------
+export interface SpecificationsProps {
+  id?: string | number;
+  name: string;
+  unit: string;
+}
+
+export interface SpecsFormProps {
+  handleSubmitSpecs: (value: SpecificationsProps, { resetForm }: { resetForm: () => void }) => void;
+}
+
+// -------Product Specs----------
+export interface SingleProductSpec {
+  type: {
+    label: string;
+    value: string | number;
+  };
+  value: string;
+}
+
+export interface ProductSpecsProps {
+  specifications: Array<SingleProductSpec>
+}
+
+export interface ProductSpecFormProp {
+  handleSubmitProductSpecs: (value: ProductSpecsProps, { resetForm }: { resetForm: () => void }) => void;
+}
+
 // --------------Products---------------
 
 export interface DDValidationProps {
   label: string;
   value: number | string;
+}
+
+export interface ProductImageProps {
+  image: any;
+  is_primary: boolean;
 }
 
 export interface ProductValidationProp {
@@ -158,6 +191,11 @@ export interface ProductValidationProp {
   base_price: number | string;
   discount_amount: number | string;
   is_active: boolean;
+  specifications: Array<SingleProductSpec>
+  images: any;
+  primary_images: Array<ProductImageProps>,
+  secondary_images: Array<ProductImageProps>,
+  delete_ids: Array<any>
 }
 
 export interface ProductFormProps {

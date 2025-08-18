@@ -1,7 +1,7 @@
 import React from "react";
 import { Col } from "reactstrap";
 import SearchInput from "./SearchInput";
-import DarkMode from "./DarkMode/DarkMode";
+// import DarkMode from "./DarkMode/DarkMode";
 import ResponsiveSearch from "../ResponsiveSearch";
 import ZoomInOut from "./ZoomInOut/ZoomInOut";
 import NotificationHeader from "./NotificationHeader/NotificationHeader";

@@ -13,8 +13,6 @@ export default function AsyncDropDown({
     placeholder = "Select an option"
 }: AsyncDropDownProp) {
 
-    console.log("value>>>", value)
-
     const { get, loading } = useFetch();
 
     // Fetch options from API
