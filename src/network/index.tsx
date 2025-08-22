@@ -18,6 +18,15 @@ interface UseFetchResult<T = any> {
     del: (url: string, headers?: Record<string, string>) => Promise<T>;
 }
 
+function getCookie(name: string): string | null {
+    if (typeof document === "undefined") return null; // avoid SSR issues
+    let value = `; ${document.cookie}`;
+    let parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
+    return null;
+}
+
+
 const useFetch = <T = any>(): UseFetchResult<T> => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<FetchError>(null);
@@ -37,24 +46,27 @@ const useFetch = <T = any>(): UseFetchResult<T> => {
                 setError(null);
                 setResponse(null);
                 try {
-
                     const isFormData = body instanceof FormData;
+
+                    // 🔹 Get CSRF token from cookie
+                    const csrfToken = getCookie("csrftoken");
 
                     const options: RequestInit = {
                         method,
                         headers: {
                             ...(isFormData
-                                ? {} // Let browser set Content-Type
+                                ? {}
                                 : { "Content-Type": "application/json" }),
                             "Authorization": session?.accessToken
                                 ? `Bearer ${session.accessToken}`
                                 : "",
+                            ...(method !== "GET" && csrfToken
+                                ? { "X-CSRFToken": csrfToken }
+                                : {}),
                             ...headers,
                         },
-                        credentials: "include",
+                        credentials: "include", // ensures cookies are sent
                     };
-
-                    console.log("options", options)
 
                     if (body) {
                         options.body = isFormData ? body : JSON.stringify(body);
@@ -64,28 +76,14 @@ const useFetch = <T = any>(): UseFetchResult<T> => {
                     console.log("api_endpoint", api_endpoint);
 
                     const res = await fetch(api_endpoint, options);
-
                     const result: T = await res.json();
-                    console.log("RESULT", result);
+
                     if ((result as any)?.status === 401) {
-                        // do logout
                         toast.error((result as any)?.messages?.[0]?.message);
                         signOut();
                     }
                     setResponse(result);
                     resolve(result);
-                    // @ts-ignore
-                    // if ((result as any).status_code !== 200) {
-                    //     // @ts-ignore
-                    //     if ((result as any)?.status_code === 401) {
-                    //         // Store?.dispatch(authActionLogout());
-                    //     } else {
-                    //         // @ts-ignore
-                    //         toast.error((result as any).message);
-                    //         // @ts-ignore
-                    //         setError((result as any)?.message);
-                    //     }
-                    // }
                 } catch (err: any) {
                     console.log("ERROR", err);
                     setError(err.message);
@@ -95,7 +93,7 @@ const useFetch = <T = any>(): UseFetchResult<T> => {
                 }
             });
         },
-        []
+        [session]
     );
 
     const get = (url: string, headers?: Record<string, string>) => request(url, "GET", null, headers);

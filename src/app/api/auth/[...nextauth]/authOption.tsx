@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getBaseURL } from "@/network/appConfig";
 import api_urls from "@/network/apiUrls";
+import { getCookie } from "@/utils/cookie";
 
 declare module "next-auth" {
   interface Session {
@@ -42,6 +43,7 @@ export const authoption: NextAuthOptions = {
         code: { label: "OTP", type: "text" },
       },
       async authorize(credentials: any) {
+        const csrftoken = getCookie("csrftoken");
         let url: string = getBaseURL() + api_urls?.verifyOtp;
         let body: any = {
           code: credentials?.code,
@@ -55,7 +57,7 @@ export const authoption: NextAuthOptions = {
           const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(body),
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "X-CSRFToken": csrftoken || "" },
             credentials: "include",
           });
 
