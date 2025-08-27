@@ -119,11 +119,10 @@ const Products = () => {
                                                             <Link href={`/products/entry/${i?.id}`}>
                                                                 <FaRegEdit
                                                                     size={20}
-                                                                    className={'bg-warning text-white me-2'}
+                                                                    className={'text-secondary me-2'}
                                                                 />
                                                             </Link>
                                                             <ModalAlert
-                                                                type={"delete"}
                                                                 onActionClick={() => deleteItem(i)}
                                                             />
                                                         </div>

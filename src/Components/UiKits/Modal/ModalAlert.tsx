@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap'
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { ModalAlertPropType } from '@/Type/ModalAlertTypes';
 
 const ModalAlert = ({
-    type = "delete",
-    onActionClick
+    onActionClick,
 }: ModalAlertPropType) => {
     const [showAlert, setShowAlert] = useState<boolean>(false);
 
@@ -17,10 +16,10 @@ const ModalAlert = ({
     }
 
     return (
-        <div className='curser-pointer'>
+        <div style={{ cursor: 'pointer' }}>
             <RiDeleteBin6Line
                 size={20}
-                className='bg-danger text-white'
+                className='text-danger'
                 onClick={toggle}
             />
             <Modal isOpen={showAlert} toggle={toggle}>

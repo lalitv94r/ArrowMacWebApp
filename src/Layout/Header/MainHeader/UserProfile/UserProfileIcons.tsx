@@ -7,10 +7,11 @@ import Cookies from "js-cookie";
 import { Href, Logout } from "@/Constant";
 import { LogOut } from "react-feather";
 import { signOut } from "next-auth/react";
+import Router from "next/router";
 
-const UserProfileIcons = () => {  
+const UserProfileIcons = () => {
   const handleClick = () => {
-   signOut();
+    signOut();
   };
   return (
     <ul>
@@ -22,7 +23,7 @@ const UserProfileIcons = () => {
           </Link>
         </li>
       ))}
-       <li onClick={handleClick} className="d-flex"><Link href={Href}scroll={false} ><LogOut /><span className="ms-2">{Logout} </span></Link></li>
+      <li onClick={handleClick} className="d-flex"><Link href={Href} scroll={false} ><LogOut /><span className="ms-2">{Logout} </span></Link></li>
     </ul>
   );
 };
