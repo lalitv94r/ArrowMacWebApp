@@ -2,6 +2,7 @@ import { Breadcrumb, BreadcrumbItem, Col, Container, Row } from "reactstrap";
 import SVG from "../SVG";
 import Link from "next/link";
 import { PropsTypes } from "@/Type/Layout/Breadcrumbs";
+import { isNotNull } from "@/utils/Utilities";
 
 const Breadcrumbs = ({ mainTitle, parent }: PropsTypes) => {
 
@@ -18,7 +19,10 @@ const Breadcrumbs = ({ mainTitle, parent }: PropsTypes) => {
                 <SVG iconId="Home" className="svg-color" />
               </Link>
             </BreadcrumbItem>
-            <BreadcrumbItem>{parent}</BreadcrumbItem>
+            {
+              isNotNull(parent) &&
+              <BreadcrumbItem>{parent}</BreadcrumbItem>
+            }
             <BreadcrumbItem className="active">{mainTitle}</BreadcrumbItem>
           </Breadcrumb>
         </Col>

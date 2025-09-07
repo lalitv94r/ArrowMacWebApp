@@ -2053,3 +2053,36 @@ export const EnterProductSpecValue = "Enter a value";
 
 // Product Images
 export const ProductImages = "Product Images";
+
+// Groups
+export const GroupsHeading = "Groups";
+export const GroupsList = "Group List";
+export const GroupsEntryHeading = "Group Entry";
+export const AddNewGroup = "Add New Group";
+export const UpdateGroup = "Update Group";
+export const GroupName = "Group Name";
+export const GroupNamePlaceholder = "Enter group name";
+
+// Permissions
+export const PermissionsHeading = "Permissions";
+
+//Users
+export const UserEntryHeading = "User Entry";
+export const UserHeading = "Users";
+export const AddNewUser = "Add New User";
+export const UsersListHeading = "User List";
+export const selectTitle = "Select title";
+export const fullName = "Full Name";
+export const enterfullName = "Enter full name";
+export const email = "Email Address";
+export const enterEmail = "Enter Email Address";
+export const phone = "Phone Number";
+export const enterPhone = "Enter Phone Number";
+export const address = "Address";
+export const enterAddress = "Enter Address";
+export const city = "City";
+export const enterCity = "Enter City";
+export const state = "State";
+export const selectState = "Select State";
+export const groupLabel = 'Group';
+export const selectGroup = "Select Group";

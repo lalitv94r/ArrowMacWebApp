@@ -223,3 +223,30 @@ export interface CheckBoxProps {
   onCheck: (args: any) => void;
   check: boolean;
 }
+
+// --------------Groups---------------
+
+export interface GroupValidationProp {
+  name: string;
+}
+
+export interface GroupFormProps {
+  handleSubmitGroup: (value: GroupValidationProp, { resetForm }: { resetForm: () => void }) => void;
+}
+
+//--------------Users-----------------
+
+export interface UserValidationProps {
+  phone: string | number;
+  email: string;
+  title: string;
+  full_name: string;
+  address: string;
+  city: string;
+  state: string;
+  group: ddOption;
+}
+
+export interface UserFromProps {
+  handleSubmitUser: (value: UserValidationProps, { resetForm }: { resetForm: () => void }) => void;
+}

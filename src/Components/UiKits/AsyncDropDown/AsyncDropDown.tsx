@@ -49,7 +49,6 @@ export default function AsyncDropDown({
     };
 
     const handleSelectOption = async (option: any) => {
-        console.log("option", option)
         onSelect(option);
     }
 

@@ -1,5 +1,4 @@
-import { SingleProductSpec } from "@/Type/Forms/FormControls/FormsControls";
-import { FormikErrors } from "formik";
+import { NameTitle } from "./localData";
 
 const isNotNull = (value: any): boolean => {
     return value !== null && value !== undefined;
@@ -15,8 +14,11 @@ async function urlToFile(url: string, filename: string, mimeType: string) {
     return new File([blob], filename, { type: mimeType });
 }
 
+const getTitleKey = (title: string) => NameTitle?.find((i: any) => i?.value === title ? i?.key : "")?.key ?? "";
+
 export {
     isNotNull,
     isErrorObject,
-    urlToFile
+    urlToFile,
+    getTitleKey
 }
